@@ -1,7 +1,5 @@
 import 'package:QuickNotes/screens/liveRoutes/share.dart';
-import 'package:QuickNotes/utils/Widgets/NoInternet.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_no_internet_widget/flutter_no_internet_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -167,10 +165,7 @@ class _ScaffoldWithNestedNavigationState
         ],
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: InternetWidget(
-        offline: const NoInternet(),
-        online: widget.navigationShell,
-      ),
+      body: widget.navigationShell,
     );
   }
 }
