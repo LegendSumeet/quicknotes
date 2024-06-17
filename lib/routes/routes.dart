@@ -3,10 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quicknotes/screens/AddNotes/add_notes.dart';
 import 'package:quicknotes/screens/HomeScreen/HomeScreen.dart';
+import 'package:quicknotes/screens/Widgets/NoInternet.dart';
 import 'package:quicknotes/screens/profile/profile.dart';
 import 'package:quicknotes/screens/settings/setting.dart';
+import 'package:flutter_no_internet_widget/flutter_no_internet_widget.dart';
 
 import '../screens/EditNotes/edit_notes.dart';
+import '../screens/Widgets/loading.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
@@ -164,76 +167,13 @@ class _ScaffoldWithNestedNavigationState
           ),
         ],
       ),
-      // bottomNavigationBar: BottomAppBar(
-      //   notchMargin: 16,
-      //   elevation: 5,
-      //   shape: const CircularNotchedRectangle(),
-      //   child: Row(
-      //     crossAxisAlignment: CrossAxisAlignment.center,
-      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //     children: [
-      //       IconButton(
-      //         splashRadius: 20,
-      //         selectedIcon: const Icon(Icons.home_filled),
-      //         icon: const Icon(
-      //           Icons.home_filled,
-      //           size: 30,
-      //         ),
-      //         onPressed: () {
-      //           _goBranch(0);
-      //         },
-      //       ),
-      //       IconButton(
-      //         splashRadius: 20,
-      //         selectedIcon: const Icon(Icons.share),
-      //         icon: const Icon(
-      //           Icons.share,
-      //           size: 30,
-      //         ),
-      //         onPressed: () {
-      //           _goBranch(1);
-      //         },
-      //       ),
-      //       IconButton.filled(
-      //         splashRadius: 20,
-      //         selectedIcon: const Icon(Icons.add),
-      //         icon: const Icon(
-      //           Icons.add,
-      //           size: 30,
-      //           color: Colors.white,
-      //         ),
-      //         onPressed: () {
-      //           _goBranch(2);
-      //         },
-      //         tooltip: 'Add',
-      //       ),
-      //       IconButton(
-      //         splashRadius: 20,
-      //         selectedIcon: const Icon(Icons.person),
-      //         icon: const Icon(
-      //           Icons.person,
-      //           size: 30,
-      //         ),
-      //         onPressed: () {
-      //           _goBranch(3);
-      //         },
-      //       ),
-      //       IconButton(
-      //         splashRadius: 20,
-      //         selectedIcon: const Icon(Icons.settings),
-      //         icon: const Icon(
-      //           Icons.settings,
-      //           size: 30,
-      //         ),
-      //         onPressed: () {
-      //           _goBranch(4);
-      //         },
-      //       ),
-      //     ],
-      //   ),
-      // ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: widget.navigationShell,
+      body: InternetWidget(
+        lookupUrl: 'https://apiv1.toystack.dev',
+        loadingWidget: const LoadingScreen(),
+        offline: const NoInternet(),
+        online: widget.navigationShell,
+      ),
     );
   }
 }

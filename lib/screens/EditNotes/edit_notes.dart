@@ -27,6 +27,5 @@ class _ShareNotesState extends ConsumerState<ShareNotes> {
         ],
       ),
     );
-
   }
 }
