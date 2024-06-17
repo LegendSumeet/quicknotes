@@ -4,7 +4,7 @@ import 'package:flutter_no_internet_widget/flutter_no_internet_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../screens/AddNotes/add_notes.dart';
+import '../screens/EditNotes/edit_notes.dart';
 import '../screens/HomeScreen/HomeScreen.dart';
 import '../screens/Widgets/NoInternet.dart';
 import '../screens/profile/profile.dart';
@@ -58,7 +58,7 @@ final StartGoRoutes = GoRouter(
             GoRoute(
               path: '/add',
               pageBuilder: (context, state) => const NoTransitionPage(
-                child: AddNotes(),
+                child: EditNotes(),
               ),
               routes: [],
             ),
