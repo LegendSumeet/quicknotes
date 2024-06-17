@@ -1,4 +1,5 @@
 import 'package:QuickNotes/screens/liveRoutes/share.dart';
+import 'package:QuickNotes/utils/Widgets/NoInternet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_no_internet_widget/flutter_no_internet_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,7 +7,6 @@ import 'package:go_router/go_router.dart';
 
 import '../screens/EditNotes/edit_notes.dart';
 import '../screens/HomeScreen/HomeScreen.dart';
-import '../screens/Widgets/NoInternet.dart';
 import '../screens/profile/profile.dart';
 import '../screens/settings/setting.dart';
 
