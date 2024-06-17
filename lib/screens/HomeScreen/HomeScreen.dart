@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:quicknotes/screens/Widgets/DateTimeline.dart';
+
+import '../Widgets/DateTimeline.dart';
 
 class HomeScreenPage extends ConsumerStatefulWidget {
   const HomeScreenPage({super.key});

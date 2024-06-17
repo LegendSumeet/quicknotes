@@ -1,15 +1,14 @@
+import 'package:QuickNotes/screens/liveRoutes/share.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_no_internet_widget/flutter_no_internet_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:quicknotes/screens/AddNotes/add_notes.dart';
-import 'package:quicknotes/screens/HomeScreen/HomeScreen.dart';
-import 'package:quicknotes/screens/Widgets/NoInternet.dart';
-import 'package:quicknotes/screens/profile/profile.dart';
-import 'package:quicknotes/screens/settings/setting.dart';
-import 'package:flutter_no_internet_widget/flutter_no_internet_widget.dart';
 
-import '../screens/EditNotes/edit_notes.dart';
-import '../screens/Widgets/loading.dart';
+import '../screens/AddNotes/add_notes.dart';
+import '../screens/HomeScreen/HomeScreen.dart';
+import '../screens/Widgets/NoInternet.dart';
+import '../screens/profile/profile.dart';
+import '../screens/settings/setting.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
@@ -169,8 +168,6 @@ class _ScaffoldWithNestedNavigationState
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: InternetWidget(
-        lookupUrl: 'https://apiv1.toystack.dev',
-        loadingWidget: const LoadingScreen(),
         offline: const NoInternet(),
         online: widget.navigationShell,
       ),

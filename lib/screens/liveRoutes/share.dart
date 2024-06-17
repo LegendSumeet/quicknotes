@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AddNotes extends ConsumerStatefulWidget {
-  const AddNotes({super.key});
+class ShareNotes extends ConsumerStatefulWidget {
+  const ShareNotes({super.key});
 
   @override
-  ConsumerState createState() => _AddNotesState();
+  ConsumerState createState() => _ShareNotesState();
 }
 
-class _AddNotesState extends ConsumerState<AddNotes> {
+class _ShareNotesState extends ConsumerState<ShareNotes> {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -16,12 +16,12 @@ class _AddNotesState extends ConsumerState<AddNotes> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(
-            Icons.add,
+            Icons.share,
             size: 100,
           ),
           const SizedBox(height: 20),
           Text(
-            'Add your notes',
+            'Share your notes with friends',
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ],

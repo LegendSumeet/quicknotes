@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ShareNotes extends ConsumerStatefulWidget {
-  const ShareNotes({super.key});
+class EditNotes extends ConsumerStatefulWidget {
+  const EditNotes({super.key});
 
   @override
-  ConsumerState createState() => _ShareNotesState();
+  ConsumerState createState() => _EditNotesState();
 }
 
-class _ShareNotesState extends ConsumerState<ShareNotes> {
+class _EditNotesState extends ConsumerState<EditNotes> {
   @override
   Widget build(BuildContext context) {
     return Center(
