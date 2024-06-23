@@ -31,10 +31,53 @@ final StartGoRoutes = GoRouter(
           routes: [
             GoRoute(
               path: '/home',
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: HomeScreenPage(),
-              ),
-              routes: [],
+              pageBuilder: (context, state) =>
+                  CustomTransitionPage(
+                    child: const HomeScreenPage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(1.0, 0.0);
+                      const end = Offset.zero;
+                      const curve = Curves.ease;
+                      var tween = Tween(begin: begin, end: end)
+                          .chain(CurveTween(curve: curve));
+                      var offsetAnimation = animation.drive(tween);
+                      return SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      );
+                    },
+                  ),
+              routes: [
+                GoRoute(
+                  pageBuilder: (context, state) =>
+                      CustomTransitionPage(
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          const begin = 0.0;
+                          const end = 1.0;
+
+                          var opacityTween = Tween<double>(
+                              begin: begin, end: end)
+                              .animate(CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeOutBack,
+                          ));
+
+                          return FadeTransition(
+                            opacity: opacityTween,
+                            child: ScaleTransition(
+                              scale: animation
+                                  .drive(Tween<double>(begin: 0.5, end: 1.0)),
+                              child: child,
+                            ),
+                          );
+                        },
+                        child: const EditNotes(),
+                      ),
+                  path: 'viewEditNotes',
+                ),
+              ],
             ),
           ],
         ),

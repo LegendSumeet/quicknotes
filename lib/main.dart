@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Quick Notes",
       theme: FlexThemeData.light(
+        lightIsWhite: true,
         colors: const FlexSchemeColor(
           primary: Color(0xff00296b),
           primaryContainer: Color(0xffa0c2ed),
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         swapLegacyOnMaterial3: true,
       ),
       darkTheme: FlexThemeData.dark(
+        darkIsTrueBlack: true,
         colors: const FlexSchemeColor(
           primary: Color(0xffb1cff5),
           primaryContainer: Color(0xff3873ba),

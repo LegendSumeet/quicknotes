@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AddNotes extends ConsumerStatefulWidget {
+class AddNotes extends StatefulHookConsumerWidget {
   const AddNotes({super.key});
 
   @override
   ConsumerState createState() => _AddNotesState();
 }
 
-class _AddNotesState extends ConsumerState<AddNotes> {
+class _AddNotesState extends ConsumerState<AddNotes>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -28,4 +30,7 @@ class _AddNotesState extends ConsumerState<AddNotes> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -33,7 +33,6 @@ class DateTimeLine extends ConsumerWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(16.0),
           child: Container(
-            width: 124.0,
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             decoration: BoxDecoration(
               border: Border.all(
@@ -48,43 +47,34 @@ class DateTimeLine extends ConsumerWidget {
                 16.0,
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  EasyDateFormatter.shortMonthName(date, "en_US"),
-                  style: (isSelected == false)
-                      ? Theme.of(context).textTheme.titleSmall
-                      : Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(color: Colors.black),
-                ),
-                const SizedBox(
-                  width: 8.0,
-                ),
-                Text(
-                  date.day.toString(),
-                  style: (isSelected == false)
-                      ? Theme.of(context).textTheme.titleSmall
-                      : Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(color: Colors.black),
-                ),
-                const SizedBox(
-                  width: 8.0,
-                ),
-                Text(
-                  EasyDateFormatter.shortDayName(date, "en_US"),
-                  style: (isSelected == false)
-                      ? Theme.of(context).textTheme.titleSmall
-                      : Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(color: Colors.black),
-                ),
-              ],
+            child: SizedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    EasyDateFormatter.shortMonthName(date, "en_US"),
+                    style: (isSelected == false)
+                        ? Theme.of(context).textTheme.titleSmall
+                        : Theme.of(context)
+                            .textTheme
+                            .titleSmall
+                            ?.copyWith(color: Colors.black),
+                  ),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  Text(
+                    date.day.toString(),
+                    style: (isSelected == false)
+                        ? Theme.of(context).textTheme.titleSmall
+                        : Theme.of(context)
+                            .textTheme
+                            .titleSmall
+                            ?.copyWith(color: Colors.black),
+                  ),
+                ],
+              ),
             ),
           ),
         );
