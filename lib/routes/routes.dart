@@ -1,4 +1,5 @@
 import 'package:QuickNotes/screens/liveRoutes/share.dart';
+import 'package:QuickNotes/utils/Widgets/create_note_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -99,7 +100,7 @@ final StartGoRoutes = GoRouter(
             GoRoute(
               path: '/add',
               pageBuilder: (context, state) => const NoTransitionPage(
-                child: EditNotes(),
+                child: CreateNoteDialog(),
               ),
               routes: [],
             ),

@@ -4,22 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'Services/LocalStorage/CRUDNotes.dart';
+
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
+  DBHelper dbHelper = DBHelper();
+  await dbHelper.initDB();
   runApp(const ProviderScope(
     child: MyApp(),
   ));
   FlutterNativeSplash.remove();
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      themeMode: ThemeMode.system,
+      themeAnimationCurve: Curves.easeInOut,
+      themeAnimationDuration: const Duration(milliseconds: 300),
       routerConfig: StartGoRoutes,
       debugShowCheckedModeBanner: false,
       title: "Quick Notes",

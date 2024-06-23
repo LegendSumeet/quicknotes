@@ -1,19 +1,38 @@
+import 'dart:math';
+
+import 'package:QuickNotes/Services/LocalStorage/CRUDNotes.dart';
+import 'package:QuickNotes/Services/RiverpodServices/notes/notes_repo.dart';
+import 'package:QuickNotes/Services/classses/notes_class_db.dart';
 import 'package:QuickNotes/utils/Widgets/DateTimeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class HomeScreenPage extends ConsumerStatefulWidget {
+class HomeScreenPage extends StatefulHookConsumerWidget {
   const HomeScreenPage({super.key});
 
   @override
   ConsumerState createState() => _HomeScreenPageState();
 }
 
-class _HomeScreenPageState extends ConsumerState<HomeScreenPage> {
+class _HomeScreenPageState extends ConsumerState<HomeScreenPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  void initState() {
+    super.initState();
+    getlocalNotes();
+  }
+
+  Future<void> getlocalNotes() async {
+    DBHelper dbHelper = DBHelper();
+    final notes = await dbHelper.getNotes();
+    ref.read(notesStateProvider).addAll(notes);
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<LocalNote> notes = ref.watch(notesStateProvider);
     List<String> tags = ["All", "Work", "Personal", "Family", "Friends"];
     List<bool> isSelected = [true, false, false, false, false];
     return Scaffold(
@@ -37,9 +56,16 @@ class _HomeScreenPageState extends ConsumerState<HomeScreenPage> {
             TageFilterChips(tags: tags, isSelected: isSelected),
             AnimationLimiter(
               child: GridView.builder(
+                primary: true,
+                reverse: true,
+                padding: const EdgeInsets.all(8.0),
+                addAutomaticKeepAlives: true,
+                addRepaintBoundaries: true,
+                addSemanticIndexes: true,
+                semanticChildCount: 10,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: 10,
+                itemCount: notes.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 0.7,
@@ -51,10 +77,17 @@ class _HomeScreenPageState extends ConsumerState<HomeScreenPage> {
                     duration: const Duration(milliseconds: 375),
                     columnCount: 2,
                     child: SlideAnimation(
+                      duration: const Duration(milliseconds: 375),
+                      delay: const Duration(milliseconds: 375),
+                      horizontalOffset: 50.0,
+                      curve: Curves.easeInOut,
                       verticalOffset: 50.0,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: FadeInAnimation(
+                          curve: Curves.easeInOut,
+                          duration: const Duration(milliseconds: 375),
+                          delay: const Duration(milliseconds: 375),
                           child: Card(
                               borderOnForeground: true,
                               elevation: 4.0,
@@ -63,8 +96,8 @@ class _HomeScreenPageState extends ConsumerState<HomeScreenPage> {
                                 borderRadius: BorderRadius.circular(16.0),
                               ),
                               child: NotesViewCard(
-                                title: "Title",
-                                description: "Description",
+                                title: notes[index].title,
+                                description: notes[index].content,
                                 imageUrl: null,
                                 onTap: () {
                                   context.go('/home/viewEditNotes');
@@ -82,6 +115,10 @@ class _HomeScreenPageState extends ConsumerState<HomeScreenPage> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class NotesViewCard extends ConsumerStatefulWidget {
@@ -107,47 +144,54 @@ class NotesViewCardState extends ConsumerState<NotesViewCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: widget.onTap,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (widget.imageUrl != null)
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
-                child: Image.network(
-                  widget.imageUrl!,
-                  fit: BoxFit.cover,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16.0),
+          color: NoteGenerator._generateRandomColor(),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (widget.imageUrl != null)
+              AspectRatio(
+                aspectRatio: 16 / 9,
+                child: ClipRRect(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(16.0)),
+                  child: Image.network(
+                    widget.imageUrl!,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    widget.title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      widget.title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    widget.description,
-                    style: Theme.of(context).textTheme.titleMedium,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      widget.description,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -385,5 +429,68 @@ class CustomPageRoute<T> extends MaterialPageRoute<T> {
       ).animate(animation),
       child: child,
     );
+  }
+}
+
+class NoteGenerator {
+  static Random random = Random();
+
+  static Color generateReadableColor({required Color backgroundColor}) {
+    Color randomColor;
+    bool isLightBackground = _calculateBrightness(backgroundColor) > 128;
+
+    do {
+      randomColor = _generateRandomColor();
+    } while (!_hasSufficientContrast(randomColor, isLightBackground));
+
+    return randomColor;
+  }
+
+  static Color _generateRandomColor() {
+    return Color.fromARGB(
+      255,
+      random.nextInt(256),
+      random.nextInt(256),
+      random.nextInt(256),
+    );
+  }
+
+  static bool _hasSufficientContrast(Color color, bool isLightBackground) {
+    Color darkColor = Colors.black;
+    Color lightColor = Colors.white;
+
+    double contrastWithDark = _calculateContrastRatio(color, darkColor);
+    double contrastWithLight = _calculateContrastRatio(color, lightColor);
+
+    // Determine the minimum contrast ratio required based on background color
+    double minContrast = isLightBackground ? 4.5 : 3.0;
+
+    return contrastWithDark >= minContrast && contrastWithLight >= minContrast;
+  }
+
+  static double _calculateContrastRatio(Color foreground, Color background) {
+    // Calculate contrast ratio using the relative luminance method
+    double luminance1 = _calculateLuminance(foreground);
+    double luminance2 = _calculateLuminance(background);
+
+    if (luminance1 > luminance2) {
+      return (luminance1 + 0.05) / (luminance2 + 0.05);
+    } else {
+      return (luminance2 + 0.05) / (luminance1 + 0.05);
+    }
+  }
+
+  static double _calculateLuminance(Color color) {
+    double r = color.red / 255.0;
+    double g = color.green / 255.0;
+    double b = color.blue / 255.0;
+
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  }
+
+  static int _calculateBrightness(Color color) {
+    // Calculate brightness based on the perceived luminance formula
+    return ((color.red * 299) + (color.green * 587) + (color.blue * 114)) ~/
+        1000;
   }
 }
