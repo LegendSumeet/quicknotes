@@ -1,3 +1,5 @@
+import 'dart:developer' as devtools;
+
 import 'package:QuickNotes/Services/classses/notes_class_db.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -19,6 +21,7 @@ class NotesState extends _$NotesState {
   }
 
   void updateNoteById(LocalNote note) {
+    devtools.log('Updating note');
     state = state.map((n) => n.id == note.id ? note : n).toList();
   }
 

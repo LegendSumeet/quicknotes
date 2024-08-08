@@ -1,10 +1,9 @@
 import 'package:QuickNotes/screens/liveRoutes/share.dart';
-import 'package:QuickNotes/utils/Widgets/create_note_dialog.dart';
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../screens/EditNotes/edit_notes.dart';
 import '../screens/HomeScreen/HomeScreen.dart';
 import '../screens/profile/profile.dart';
 import '../screens/settings/setting.dart';
@@ -17,9 +16,10 @@ final _shellNavigatorProfileKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellD');
 final _shellNavigatorSettingsKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellE');
+
 final StartGoRoutes = GoRouter(
   debugLogDiagnostics: true,
-  initialLocation: '/home',
+  initialLocation: '/',
   navigatorKey: _rootNavigatorKey,
   routes: [
     StatefulShellRoute.indexedStack(
@@ -31,53 +31,29 @@ final StartGoRoutes = GoRouter(
           navigatorKey: _shellNavigatorHomeKey,
           routes: [
             GoRoute(
-              path: '/home',
-              pageBuilder: (context, state) =>
-                  CustomTransitionPage(
-                    child: const HomeScreenPage(),
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                      const begin = Offset(1.0, 0.0);
-                      const end = Offset.zero;
-                      const curve = Curves.ease;
-                      var tween = Tween(begin: begin, end: end)
-                          .chain(CurveTween(curve: curve));
-                      var offsetAnimation = animation.drive(tween);
-                      return SlideTransition(
-                        position: offsetAnimation,
-                        child: child,
-                      );
-                    },
-                  ),
+              path: '/',
+              pageBuilder: (context, state) => CustomTransitionPage(
+                child: const HomeScreenPage(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+                  var tween = Tween(begin: begin, end: end)
+                      .chain(CurveTween(curve: curve));
+                  var offsetAnimation = animation.drive(tween);
+                  return SlideTransition(
+                    position: offsetAnimation,
+                    child: child,
+                  );
+                },
+              ),
               routes: [
-                GoRoute(
-                  pageBuilder: (context, state) =>
-                      CustomTransitionPage(
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
-                          const begin = 0.0;
-                          const end = 1.0;
-
-                          var opacityTween = Tween<double>(
-                              begin: begin, end: end)
-                              .animate(CurvedAnimation(
-                            parent: animation,
-                            curve: Curves.easeOutBack,
-                          ));
-
-                          return FadeTransition(
-                            opacity: opacityTween,
-                            child: ScaleTransition(
-                              scale: animation
-                                  .drive(Tween<double>(begin: 0.5, end: 1.0)),
-                              child: child,
-                            ),
-                          );
-                        },
-                        child: const EditNotes(),
-                      ),
-                  path: 'viewEditNotes',
-                ),
+                // GoRoute(
+                //   path: 'details',
+                //   builder: (context, state) =>
+                //   const EditNotes(NoteId: NoteId)
+                // ),
               ],
             ),
           ],
@@ -89,18 +65,6 @@ final StartGoRoutes = GoRouter(
               path: '/share',
               pageBuilder: (context, state) => const NoTransitionPage(
                 child: ShareNotes(),
-              ),
-              routes: [],
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          navigatorKey: _shellNavigatorAddKey,
-          routes: [
-            GoRoute(
-              path: '/add',
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: CreateNoteDialog(),
               ),
               routes: [],
             ),
@@ -159,57 +123,45 @@ class _ScaffoldWithNestedNavigationState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        iconSize: 30,
-        type: BottomNavigationBarType.shifting,
-        currentIndex: widget.navigationShell.currentIndex,
-        onTap: _goBranch,
-        items: const [
-          BottomNavigationBarItem(
-            activeIcon: Icon(
-              Icons.home_filled,
-              size: 30,
-            ),
-            icon: Icon(
-              Icons.home_filled,
-              size: 30,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.group_rounded,
-              size: 30,
-            ),
-            label: 'Share',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.add,
-              size: 30,
-            ),
-            label: 'Add',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              size: 30,
-            ),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings,
-              size: 30,
-            ),
-            label: 'Settings',
-          ),
-        ],
-      ),
+      // bottomNavigationBar: NavigationBar(
+      //   animationDuration: const Duration(milliseconds: 300),
+      //   selectedIndex: widget.navigationShell.currentIndex,
+      //   onDestinationSelected: _goBranch,
+      //   destinations: const [
+      //     NavigationDestination(
+      //       icon: Icon(Icons.home_outlined),
+      //       selectedIcon: Icon(Icons.home),
+      //       label: 'Home',
+      //     ),
+      //     NavigationDestination(
+      //       icon: Icon(Icons.group_outlined),
+      //       selectedIcon: Icon(Icons.group),
+      //       label: 'Share',
+      //     ),
+      //     NavigationDestination(
+      //       icon: Icon(Icons.person_outline),
+      //       selectedIcon: Icon(Icons.person),
+      //       label: 'Profile',
+      //     ),
+      //     NavigationDestination(
+      //       icon: Icon(Icons.settings_outlined),
+      //       selectedIcon: Icon(Icons.settings),
+      //       label: 'Settings',
+      //     ),
+      //   ],
+      // ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: widget.navigationShell,
+      body: PageTransitionSwitcher(
+          duration: const Duration(milliseconds: 300),
+          transitionBuilder: (Widget child, Animation<double> animation,
+              Animation<double> secondaryAnimation) {
+            return FadeThroughTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              child: child,
+            );
+          },
+          child: widget.navigationShell),
     );
   }
 }

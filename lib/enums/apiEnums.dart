@@ -12,3 +12,10 @@ enum EndPoint {
   getNoteUser,
   getAllNotesUser,
 }
+
+enum LocalNoteAction {
+  add,
+  update,
+  delete,
+  get,
+}

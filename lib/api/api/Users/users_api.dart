@@ -1,4 +1,4 @@
-import 'package:QuickNotes/apiv1/api/config/serveConfig.dart';
+import 'package:QuickNotes/api/api/config/serveConfig.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -18,7 +18,6 @@ class UsersApiPoint extends _$UsersApiPoint {
       },
     ),
   );
-
   @override
   Future<Response> build() async {
     return Response(requestOptions: RequestOptions(path: ''));

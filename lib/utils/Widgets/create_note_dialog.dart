@@ -1,5 +1,11 @@
+import 'dart:math';
+
+import 'package:QuickNotes/Services/RiverpodServices/notes/notes_repo.dart';
+import 'package:QuickNotes/Services/classses/notes_class_db.dart';
+import 'package:QuickNotes/riverpod/localNoteList/localNoteList.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CreateNoteDialog extends StatefulHookConsumerWidget {
@@ -14,6 +20,7 @@ class _CreateNoteDialogState extends ConsumerState<CreateNoteDialog>
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
   late TextEditingController _tagsController;
+  FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -21,6 +28,11 @@ class _CreateNoteDialogState extends ConsumerState<CreateNoteDialog>
     _titleController = TextEditingController();
     _descriptionController = TextEditingController();
     _tagsController = TextEditingController();
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        SystemChannels.textInput.invokeMethod('TextInput.hide');
+      }
+    });
   }
 
   @override
@@ -35,21 +47,19 @@ class _CreateNoteDialogState extends ConsumerState<CreateNoteDialog>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+    final selectedCategory = useState<String?>(null);
+
+    final List<String> categories = ['Work', 'Personal', 'Shopping', 'Others'];
+
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      child: AnimatedPadding(
-        duration: const Duration(milliseconds: 300),
-        padding: MediaQuery.of(context).viewInsets +
-            const EdgeInsets.symmetric(horizontal: 16.0),
-        child: SingleChildScrollView(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              const SizedBox(height: 24.0),
               const Text(
                 'Create a Note',
                 style: TextStyle(
@@ -57,8 +67,8 @@ class _CreateNoteDialogState extends ConsumerState<CreateNoteDialog>
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 24.0),
               _buildTextField(
+                autofocus: true,
                 controller: _titleController,
                 labelText: 'Title',
                 hintText: 'Enter the title of your note',
@@ -69,27 +79,72 @@ class _CreateNoteDialogState extends ConsumerState<CreateNoteDialog>
                   return null;
                 },
               ),
-              const SizedBox(height: 16.0),
-              _buildTextField(
-                controller: _descriptionController,
-                labelText: 'Description',
-                hintText: 'Enter the description of your note',
-                maxLines: 3,
-              ),
-              const SizedBox(height: 16.0),
-              _buildTextField(
-                controller: _tagsController,
-                labelText: 'Tags',
-                hintText: 'Enter tags separated by commas',
-              ),
-              const SizedBox(height: 24.0),
-              _buildDropdown(),
-              const SizedBox(height: 24.0),
-              ElevatedButton(
-                onPressed: () {
-                  context.go('/notes');
+              DropdownButtonFormField<String>(
+                focusNode: _focusNode,
+                decoration: InputDecoration(
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24.0),
+                  ),
+                ),
+                hint: const Text("Select Category"),
+                value: selectedCategory.value,
+                onChanged: (String? value) {
+                  selectedCategory.value = value;
+                  _tagsController.text = value!;
                 },
-                child: const Text('Create Note'),
+                items:
+                    categories.map<DropdownMenuItem<String>>((String category) {
+                  return DropdownMenuItem<String>(
+                    value: category,
+                    child:
+                        Text(category, style: TextStyle(color: Colors.white)),
+                  );
+                }).toList(),
+                icon: Icon(Icons.arrow_drop_down,
+                    color: Theme.of(context).colorScheme.secondary),
+                style: Theme.of(context).textTheme.titleMedium,
+                isDense: true,
+                isExpanded:
+                    true, // Ensures the dropdown button takes the full width of the parent
+              ),
+              _buildFilterChip(),
+              const SizedBox(height: 24.0),
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (!_formKey.currentState!.validate()) {
+                        return;
+                      }
+                      LocalNote note = LocalNote(
+                        id: generateRandomId(),
+                        title: _titleController.text,
+                        category: _tagsController.text,
+                        content: "",
+                        createdAt: DateTime.now().toString(),
+                        updatedAt: DateTime.now().toString(),
+                      );
+                      await ref.read(localNoteSetProvider.notifier).add(note);
+                      ref.read(notesStateProvider.notifier).addNote(note);
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Create Note'),
+                  ),
+                  const SizedBox(width: 8.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                ],
               ),
               const SizedBox(height: 24.0),
             ],
@@ -105,41 +160,67 @@ class _CreateNoteDialogState extends ConsumerState<CreateNoteDialog>
     required String hintText,
     int? maxLines,
     String? Function(String?)? validator,
+    bool? autofocus,
   }) {
     return TextFormField(
-      controller: controller,
+      autofocus: autofocus ?? false,
       decoration: InputDecoration(
-        labelText: labelText,
+        filled: true,
+        // fillColor: Theme.of(context).colorScheme.secondaryContainer,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(24.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(24.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(24.0),
+        ),
+
         hintText: hintText,
-        border: const OutlineInputBorder(),
       ),
+      controller: controller,
       maxLines: maxLines,
       validator: validator,
     );
   }
 
-  Widget _buildDropdown() {
-    return DropdownButtonFormField<String>(
-      value: _isShared ? 'Shared' : 'Not Shared',
-      decoration: InputDecoration(
-        labelText: 'Shared Status',
-        border: OutlineInputBorder(),
+  Widget _buildFilterChip() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Wrap(
+        spacing: 8.0,
+        children: [
+          FilterChip(
+            label: const Text('Shared'),
+            selected: _isShared,
+            onSelected: (bool selected) {
+              setState(() {
+                _isShared = selected;
+              });
+            },
+          ),
+          FilterChip(
+            label: const Text('Not Shared'),
+            selected: !_isShared,
+            onSelected: (bool selected) {
+              setState(() {
+                _isShared = !selected;
+              });
+            },
+          ),
+        ],
       ),
-      items: <String>['Shared', 'Not Shared'].map((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-      onChanged: (String? newValue) {
-        setState(() {
-          _isShared = newValue == 'Shared';
-        });
-      },
     );
   }
 
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
+}
+
+int generateRandomId() {
+  final _random = Random();
+  return _random
+      .nextInt(1000000); // generates a random integer between 0 and 999999
 }
