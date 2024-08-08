@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "269925875194",
+    "project_id": "quicknotes-apiv1",
+    "storage_bucket": "quicknotes-apiv1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:269925875194:android:e2ec2dcc804ebefa3b3843",
+        "android_client_info": {
+          "package_name": "com.legendsumeet.quicknotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLdXbYzhA5gSz3u5AsRONDCgVmKNVRQOE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

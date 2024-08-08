@@ -1,0 +1,22 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "quicknotes-apiv1",
+          "appId": "1:269925875194:android:e2ec2dcc804ebefa3b3843",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "quicknotes-apiv1",
+          "configurations": {
+            "android": "1:269925875194:android:e2ec2dcc804ebefa3b3843",
+            "ios": "1:269925875194:ios:ee4105ec31ea3ca23b3843"
+          }
+        }
+      }
+    }
+  }
+}
