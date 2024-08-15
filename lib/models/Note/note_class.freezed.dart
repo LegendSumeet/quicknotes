@@ -21,32 +21,24 @@ Note _$NoteFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Note {
   int get id => throw _privateConstructorUsedError;
-
   List<String>? get tags => throw _privateConstructorUsedError;
-
   String? get category => throw _privateConstructorUsedError;
-
   String get title => throw _privateConstructorUsedError;
-
   String get content => throw _privateConstructorUsedError;
-
   String? get description => throw _privateConstructorUsedError;
-
   User? get user => throw _privateConstructorUsedError;
-
   List<User>? get sharedWith => throw _privateConstructorUsedError;
-
   List<User>? get pendingUser => throw _privateConstructorUsedError;
-
   DateTime? get updatedAt => throw _privateConstructorUsedError;
-
   DateTime? get createdAt => throw _privateConstructorUsedError;
-
   Notebook? get notebook => throw _privateConstructorUsedError;
 
+  /// Serializes this Note to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Note
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $NoteCopyWith<Note> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -54,7 +46,6 @@ mixin _$Note {
 abstract class $NoteCopyWith<$Res> {
   factory $NoteCopyWith(Note value, $Res Function(Note) then) =
       _$NoteCopyWithImpl<$Res, Note>;
-
   @useResult
   $Res call(
       {int id,
@@ -71,7 +62,6 @@ abstract class $NoteCopyWith<$Res> {
       Notebook? notebook});
 
   $UserCopyWith<$Res>? get user;
-
   $NotebookCopyWith<$Res>? get notebook;
 }
 
@@ -82,10 +72,11 @@ class _$NoteCopyWithImpl<$Res, $Val extends Note>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Note
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -154,6 +145,8 @@ class _$NoteCopyWithImpl<$Res, $Val extends Note>
     ) as $Val);
   }
 
+  /// Create a copy of Note
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserCopyWith<$Res>? get user {
@@ -166,6 +159,8 @@ class _$NoteCopyWithImpl<$Res, $Val extends Note>
     });
   }
 
+  /// Create a copy of Note
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $NotebookCopyWith<$Res>? get notebook {
@@ -184,7 +179,6 @@ abstract class _$$NoteImplCopyWith<$Res> implements $NoteCopyWith<$Res> {
   factory _$$NoteImplCopyWith(
           _$NoteImpl value, $Res Function(_$NoteImpl) then) =
       __$$NoteImplCopyWithImpl<$Res>;
-
   @override
   @useResult
   $Res call(
@@ -203,7 +197,6 @@ abstract class _$$NoteImplCopyWith<$Res> implements $NoteCopyWith<$Res> {
 
   @override
   $UserCopyWith<$Res>? get user;
-
   @override
   $NotebookCopyWith<$Res>? get notebook;
 }
@@ -215,6 +208,8 @@ class __$$NoteImplCopyWithImpl<$Res>
   __$$NoteImplCopyWithImpl(_$NoteImpl _value, $Res Function(_$NoteImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Note
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -311,7 +306,6 @@ class _$NoteImpl with DiagnosticableTreeMixin implements _Note {
   @override
   final int id;
   final List<String>? _tags;
-
   @override
   List<String>? get tags {
     final value = _tags;
@@ -332,7 +326,6 @@ class _$NoteImpl with DiagnosticableTreeMixin implements _Note {
   @override
   final User? user;
   final List<User>? _sharedWith;
-
   @override
   List<User>? get sharedWith {
     final value = _sharedWith;
@@ -343,7 +336,6 @@ class _$NoteImpl with DiagnosticableTreeMixin implements _Note {
   }
 
   final List<User>? _pendingUser;
-
   @override
   List<User>? get pendingUser {
     final value = _pendingUser;
@@ -410,7 +402,7 @@ class _$NoteImpl with DiagnosticableTreeMixin implements _Note {
                 other.notebook == notebook));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -427,7 +419,9 @@ class _$NoteImpl with DiagnosticableTreeMixin implements _Note {
       createdAt,
       notebook);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Note
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$NoteImplCopyWith<_$NoteImpl> get copyWith =>
@@ -460,42 +454,33 @@ abstract class _Note implements Note {
 
   @override
   int get id;
-
   @override
   List<String>? get tags;
-
   @override
   String? get category;
-
   @override
   String get title;
-
   @override
   String get content;
-
   @override
   String? get description;
-
   @override
   User? get user;
-
   @override
   List<User>? get sharedWith;
-
   @override
   List<User>? get pendingUser;
-
   @override
   DateTime? get updatedAt;
-
   @override
   DateTime? get createdAt;
-
   @override
   Notebook? get notebook;
 
+  /// Create a copy of Note
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$NoteImplCopyWith<_$NoteImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

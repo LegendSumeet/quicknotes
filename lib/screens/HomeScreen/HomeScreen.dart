@@ -58,6 +58,17 @@ class _HomeScreenPageState extends ConsumerState<HomeScreenPage> {
     );
   }
 
+  void gotoDetailsPage(BuildContext context, LocalNote note) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          return EditNotes(
+              title: note.title, NoteId: note.id);
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isScrolling = useState(false);
@@ -136,9 +147,9 @@ class _HomeScreenPageState extends ConsumerState<HomeScreenPage> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottom: const PreferredSize(
           preferredSize: Size.fromHeight(60),
-          child: TageFilterChips(
-            tags: ["All", "Work", "Personal", "Shopping", "Others"],
-            isSelected: [true, false, false, false, false],
+          child: AppBarChips(
+            tags: ['Work', 'Personal', 'Shopping', 'Others'],
+            isSelected: [true, false, false, false],
           ),
         ),
         elevation: 4,
@@ -160,7 +171,7 @@ class _HomeScreenPageState extends ConsumerState<HomeScreenPage> {
       ),
       body: AnimationLimiter(
         child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 1.0,
           ),
@@ -173,58 +184,51 @@ class _HomeScreenPageState extends ConsumerState<HomeScreenPage> {
           itemBuilder: (context, index) {
             LocalNote note = notes.elementAt(index);
             return AnimationConfiguration.staggeredList(
+              delay: const Duration(milliseconds: 375),
               position: index,
               duration: const Duration(milliseconds: 375),
               child: SlideAnimation(
+                verticalOffset: 50.0,
                 horizontalOffset: 50.0,
                 curve: Curves.easeInOut,
                 child: FadeInAnimation(
-                  child: ScaleAnimation(
-                    curve: Curves.easeInOut,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Hero(
-                        tag: "notes_${note.id}",
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .secondaryContainer,
-                            borderRadius: BorderRadius.circular(16.0),
-                          ),
-                          child: ListTile(
-                            onLongPress: () {
-                              _showDeleteConfirmationDialog(note);
-                            },
-                            onTap: () {
-                              showAnimatedDialog(
-                                context,
-                                "notes_${note.id}",
-                                note.id,
-                                note.title,
-                              );
-                            },
-                            title: Text(note.title,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium!
-                                    .copyWith(color: Colors.white)),
-                            subtitle: Text(
-                              convertToDocument(note.content),
-                              maxLines:
-                                  convertToDocument(note.content).length <= 3
-                                      ? convertToDocument(note.content).length
-                                      : 3,
-                              overflow: TextOverflow.ellipsis,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: ListTile(
+                        dense: true,
+                        onLongPress: () {
+                          _showDeleteConfirmationDialog(note);
+                        },
+                        onTap: () {
+                          //   context,
+                          //   "notes_${note.id}",
+                          //   note.id,
+                          //   note.title,
+                          // );
+                          gotoDetailsPage(context, note);
+                        },
+                        title: Hero(
+                          tag: "notes_${note.id}",
+                          transitionOnUserGestures: true,
+                          child: Text(capitalize(note.title),
                               style: Theme.of(context)
                                   .textTheme
-                                  .titleSmall!
-                                  .copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.outline,
-                                  ),
-                            ),
-                          ),
+                                  .titleMedium!
+                                  .copyWith(color: Colors.white)),
+                        ),
+                        subtitle: Text(
+                          convertToDocument(note.content),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: Colors.grey.shade400),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
@@ -665,5 +669,72 @@ IconData getCategoryIcon(String category) {
       return Icons.more_horiz;
     default:
       return Icons.help; // Default icon if the category is not recognized
+  }
+}
+
+String capitalize(String input) {
+  if (input.isEmpty) return input;
+  return input.split(' ').map((word) {
+    if (word.isEmpty) return word;
+    return word[0].toUpperCase() + word.substring(1).toLowerCase();
+  }).join(' ');
+}
+
+class AppBarChips extends StatefulWidget {
+  final List<String> tags;
+  final List<bool> isSelected;
+
+  const AppBarChips({
+    Key? key,
+    required this.tags,
+    required this.isSelected,
+  }) : super(key: key);
+
+  @override
+  _AppBarChipsState createState() => _AppBarChipsState();
+}
+
+class _AppBarChipsState extends State<AppBarChips> {
+  late List<bool> _isSelected;
+
+  @override
+  void initState() {
+    super.initState();
+    _isSelected = widget.isSelected;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 60,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: widget.tags.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.all(4),
+              child: FilterChip(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24.0),
+                ),
+                selectedColor: Theme.of(context).scaffoldBackgroundColor,
+                backgroundColor:
+                    Theme.of(context).primaryColor.withOpacity(0.5),
+                label: Text(widget.tags[index]),
+                selected: _isSelected[index],
+                onSelected: (value) {
+                  setState(() {
+                    _isSelected = List<bool>.filled(_isSelected.length, false);
+                    _isSelected[index] = value;
+                  });
+                },
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }

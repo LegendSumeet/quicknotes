@@ -20,7 +20,6 @@ final isLoggedInProvider = NotifierProvider<IsLoggedIn, bool>.internal(
 );
 
 typedef _$IsLoggedIn = Notifier<bool>;
-
 String _$isRegisteredHash() => r'c5a8db215338863265e4745cef5ca94f3a67f549';
 
 /// See also [IsRegistered].

@@ -188,7 +188,6 @@ class _LocalApiNoteSetProviderElement
 
   @override
   LocalNoteAction get actions => (origin as LocalApiNoteSetProvider).actions;
-
   @override
   LocalNote? get note => (origin as LocalApiNoteSetProvider).note;
 }

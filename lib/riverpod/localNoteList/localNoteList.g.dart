@@ -6,7 +6,7 @@ part of 'localNoteList.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$localNoteSetHash() => r'7287fda6cd4f4a678688b66d464ece4d1088267c';
+String _$localNoteSetHash() => r'933ef1ded57709cfb8e6c6327b6b8ce489c095ac';
 
 /// See also [LocalNoteSet].
 @ProviderFor(LocalNoteSet)
@@ -21,7 +21,6 @@ final localNoteSetProvider =
 );
 
 typedef _$LocalNoteSet = AsyncNotifier<Set<LocalNote>>;
-
 String _$localNoteContentHash() => r'bcd4c76e4a0fe2c1962cef977478de610a68ee75';
 
 /// Copied from Dart SDK

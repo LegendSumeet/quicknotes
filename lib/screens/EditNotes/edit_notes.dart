@@ -118,16 +118,17 @@ class _EditNotesState extends ConsumerState<EditNotes>
         ),
         title: Text(widget.title),
       ),
-      body: FutureBuilder(
-        future: _noteFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            return SafeArea(
-              child: Center(
+      body: Hero(
+        tag: "notes_${widget.NoteId}",
+        child: FutureBuilder(
+          future: _noteFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -152,20 +153,23 @@ class _EditNotesState extends ConsumerState<EditNotes>
                           dialogTheme: QuillDialogTheme(
                             buttonStyle: ButtonStyle(
                               backgroundColor:
-                                  WidgetStateProperty.all(Colors.blue),
+                              WidgetStateProperty.all(Colors.blue),
                               foregroundColor:
-                                  WidgetStateProperty.all(Colors.white),
+                              WidgetStateProperty.all(Colors.white),
                             ),
                           ),
                           customStyles: DefaultStyles(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Theme
+                                .of(context)
+                                .colorScheme
+                                .primary,
                           ),
                           textSelectionThemeData: TextSelectionThemeData(
                             cursorColor: Colors.blue,
                             selectionColor: Colors.blue.withOpacity(0.3),
                             selectionHandleColor: Colors.blue,
                           ),
-                          autoFocus: true,
+
                           padding: const EdgeInsets.all(16),
                           placeholder: 'Add your notes here...',
                           expands: true,
@@ -201,9 +205,9 @@ class _EditNotesState extends ConsumerState<EditNotes>
                         dialogTheme: QuillDialogTheme(
                           buttonStyle: ButtonStyle(
                             backgroundColor:
-                                WidgetStateProperty.all(Colors.blue),
+                            WidgetStateProperty.all(Colors.blue),
                             foregroundColor:
-                                WidgetStateProperty.all(Colors.white),
+                            WidgetStateProperty.all(Colors.white),
                           ),
                         ),
                         controller: _controller,
@@ -214,10 +218,10 @@ class _EditNotesState extends ConsumerState<EditNotes>
                     ),
                   ],
                 ),
-              ),
-            );
-          }
-        },
+              );
+            }
+          },
+        ),
       ),
     );
   }

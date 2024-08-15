@@ -21,30 +21,23 @@ User _$UserFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$User {
   int get id => throw _privateConstructorUsedError;
-
   String get email => throw _privateConstructorUsedError;
-
   String? get name => throw _privateConstructorUsedError;
-
   List<Note>? get sharedNotes => throw _privateConstructorUsedError;
-
   List<Note>? get notes => throw _privateConstructorUsedError;
-
   List<Note>? get pendingNotes => throw _privateConstructorUsedError;
-
   DateTime? get updatedAt => throw _privateConstructorUsedError;
-
   DateTime? get createdAt => throw _privateConstructorUsedError;
-
   List<Notebook>? get notebooks => throw _privateConstructorUsedError;
-
   List<Notebook>? get pendingUser => throw _privateConstructorUsedError;
-
   List<Notebook>? get sharedNotebooks => throw _privateConstructorUsedError;
 
+  /// Serializes this User to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -52,7 +45,6 @@ mixin _$User {
 abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
-
   @useResult
   $Res call(
       {int id,
@@ -75,10 +67,11 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -148,7 +141,6 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$$UserImplCopyWith(
           _$UserImpl value, $Res Function(_$UserImpl) then) =
       __$$UserImplCopyWithImpl<$Res>;
-
   @override
   @useResult
   $Res call(
@@ -172,6 +164,8 @@ class __$$UserImplCopyWithImpl<$Res>
   __$$UserImplCopyWithImpl(_$UserImpl _value, $Res Function(_$UserImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -269,7 +263,6 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   @override
   final String? name;
   final List<Note>? _sharedNotes;
-
   @override
   List<Note>? get sharedNotes {
     final value = _sharedNotes;
@@ -280,7 +273,6 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   }
 
   final List<Note>? _notes;
-
   @override
   List<Note>? get notes {
     final value = _notes;
@@ -291,7 +283,6 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   }
 
   final List<Note>? _pendingNotes;
-
   @override
   List<Note>? get pendingNotes {
     final value = _pendingNotes;
@@ -306,7 +297,6 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   @override
   final DateTime? createdAt;
   final List<Notebook>? _notebooks;
-
   @override
   List<Notebook>? get notebooks {
     final value = _notebooks;
@@ -317,7 +307,6 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   }
 
   final List<Notebook>? _pendingUser;
-
   @override
   List<Notebook>? get pendingUser {
     final value = _pendingUser;
@@ -328,7 +317,6 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   }
 
   final List<Notebook>? _sharedNotebooks;
-
   @override
   List<Notebook>? get sharedNotebooks {
     final value = _sharedNotebooks;
@@ -386,7 +374,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
                 .equals(other._sharedNotebooks, _sharedNotebooks));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -402,7 +390,9 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       const DeepCollectionEquality().hash(_pendingUser),
       const DeepCollectionEquality().hash(_sharedNotebooks));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>
@@ -434,39 +424,31 @@ abstract class _User implements User {
 
   @override
   int get id;
-
   @override
   String get email;
-
   @override
   String? get name;
-
   @override
   List<Note>? get sharedNotes;
-
   @override
   List<Note>? get notes;
-
   @override
   List<Note>? get pendingNotes;
-
   @override
   DateTime? get updatedAt;
-
   @override
   DateTime? get createdAt;
-
   @override
   List<Notebook>? get notebooks;
-
   @override
   List<Notebook>? get pendingUser;
-
   @override
   List<Notebook>? get sharedNotebooks;
 
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
